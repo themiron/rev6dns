@@ -11,11 +11,13 @@ LIBS=
 PACKAGE=rev6dns
 OBJS=$(PACKAGE).o
 
-rev6dns: $(PACKAGE).o $(LIBS)
+all: $(PACKAGE)
+
+$(PACKAGE): $(PACKAGE).o $(LIBS)
 	$(CC) $(CCFLAGS) $(LDFLAGS) $(OBJS) -o $(PACKAGE) $(LIBS)
 
 %.o: %.c
 	$(CC) $(CCFLAGS) -c $<
 
 clean:
-	rm *.o rev6dns
+	rm *.o $(PACKAGE)
