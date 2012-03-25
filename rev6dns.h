@@ -2,7 +2,7 @@
  * rev6dns.h
  * Part of the rev6dns package
  *
- * Copyright 2010 Vladislav Grishenko <themiron@mail.ru.com>
+ * Copyright 2010 Vladislav Grishenko <themiron@mail.ru>
  * Some ideas was taken from drpoxy package by Matthew Pratt.
  * and from v6rev-dnslab.pl script
  *
