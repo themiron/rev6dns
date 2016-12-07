@@ -40,6 +40,8 @@
 #define NS_RCODE_NOTIMP	4
 #define NS_RCODE_REFUSE	5
 
+#define DEFAULT_TTL	60
+
 struct all_addr {
 	union {
 		struct in_addr addr4;
@@ -70,46 +72,45 @@ struct list {
 };
 
 struct ns_header {
-	short int id;
-	short int flags;
-	short int total_questions;
-	short int total_answers;
-	short int total_authority;
-	short int total_additional;
-};
+	uint16_t id;
+	uint16_t flags;
+	uint16_t total_questions;
+	uint16_t total_answers;
+	uint16_t total_authority;
+	uint16_t total_additional;
+} __attribute__((packed));
 
 struct ns_request {
-	short int ns_type;
-	short int ns_class;
-};
+	uint16_t ns_type;
+	uint16_t ns_class;
+} __attribute__((packed));
 
 struct ns_answer {
-	short int ns_name;
-	short int ns_type;
-	short int ns_class;
-	short int ns_ttl;
-	short int ns_ttl2;
-	short int ns_len;
-};
+	uint16_t ns_name;
+	uint16_t ns_type;
+	uint16_t ns_class;
+	uint32_t ns_ttl;
+	uint16_t ns_len;
+} __attribute__((packed));
 
 struct ns_ptr {
 	char *name, *ptr;
 	struct ns_ptr *next;
-};
+} __attribute__((packed));
 
 struct ns_cname {
 	char *alias, *target;
 	struct ns_cname *next;
-};
+} __attribute__((packed));
 
 struct ns_soa {
 	char *mname, *rname;
-	int serial;
-	int refresh;
-	int retry;
-	int expire;
-	int minimum;
-};
+	uint32_t serial;
+	uint32_t refresh;
+	uint32_t retry;
+	uint32_t expire;
+	uint32_t minimum;
+} __attribute__((packed));
 
 struct udp_packet {
 	struct ns_header header;

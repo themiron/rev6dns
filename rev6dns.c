@@ -543,7 +543,7 @@ static int dns_append_ns(int sock, struct udp_packet *packet, int rr, char *zone
 	dns_ans.ns_name  = htons(0xc00c);
 	dns_ans.ns_type  = htons(NS_TYPE_NS);
 	dns_ans.ns_class = htons(NS_CLASS_IN);
-	dns_ans.ns_ttl   = htons(60);
+	dns_ans.ns_ttl   = htonl(DEFAULT_TTL);
 	dns_ans.ns_len   = htons(strlen(tmp1)+1);
 
 	if (zone) {
@@ -577,7 +577,7 @@ static int dns_append_soa(int sock, struct udp_packet *packet, int rr, char *zon
 	dns_ans.ns_name  = htons(0xc00c);
 	dns_ans.ns_type  = htons(NS_TYPE_SOA);
 	dns_ans.ns_class = htons(NS_CLASS_IN);
-	dns_ans.ns_ttl   = htons(60);
+	dns_ans.ns_ttl   = htonl(DEFAULT_TTL);
 	dns_ans.ns_len   = htons(strlen(tmp1)+strlen(tmp2)+2+20);
 
 	if (zone) {
@@ -611,7 +611,7 @@ static int dns_append_ptr(int sock, struct udp_packet *packet, int rr, char *ptr
 	dns_ans.ns_name  = htons(0xc00c);
 	dns_ans.ns_type  = htons(NS_TYPE_PTR);
 	dns_ans.ns_class = htons(NS_CLASS_IN);
-	dns_ans.ns_ttl   = htons(60);
+	dns_ans.ns_ttl   = htonl(DEFAULT_TTL);
 	dns_ans.ns_len   = htons(strlen(tmp)+1);
 
     	packet_append(packet, &dns_ans, sizeof(dns_ans));
@@ -631,7 +631,7 @@ static int dns_append_aaaa(int sock, struct udp_packet *packet, int rr, struct i
 	dns_ans.ns_name  = htons(0xc00c);
 	dns_ans.ns_type  = htons(NS_TYPE_AAAA);
 	dns_ans.ns_class = htons(NS_CLASS_IN);
-	dns_ans.ns_ttl   = htonl(60);
+	dns_ans.ns_ttl   = htonl(DEFAULT_TTL);
 	dns_ans.ns_len   = htons(sizeof(struct in6_addr));
 
     	packet_append(packet, &dns_ans, sizeof(dns_ans));
