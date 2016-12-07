@@ -49,6 +49,7 @@ static char 	       netrev[NI_MAXHOST+1];
 
 static char *domain;
 static char *nserver;
+static unsigned int ttl = DEFAULT_TTL;
 
 static int is_open = 0;
 
@@ -542,7 +543,7 @@ static int dns_append_ns(int sock, struct udp_packet *packet, int rr, char *zone
 	dns_ans.ns_name  = htons(0xc00c);
 	dns_ans.ns_type  = htons(NS_TYPE_NS);
 	dns_ans.ns_class = htons(NS_CLASS_IN);
-	dns_ans.ns_ttl   = htonl(DEFAULT_TTL);
+	dns_ans.ns_ttl   = htonl(ttl);
 	dns_ans.ns_len   = htons(strlen(tmp1)+1);
 
 	if (zone) {
@@ -576,7 +577,7 @@ static int dns_append_soa(int sock, struct udp_packet *packet, int rr, char *zon
 	dns_ans.ns_name  = htons(0xc00c);
 	dns_ans.ns_type  = htons(NS_TYPE_SOA);
 	dns_ans.ns_class = htons(NS_CLASS_IN);
-	dns_ans.ns_ttl   = htonl(DEFAULT_TTL);
+	dns_ans.ns_ttl   = htonl(ttl);
 	dns_ans.ns_len   = htons(strlen(tmp1)+strlen(tmp2)+2+20);
 
 	if (zone) {
@@ -610,7 +611,7 @@ static int dns_append_ptr(int sock, struct udp_packet *packet, int rr, char *ptr
 	dns_ans.ns_name  = htons(0xc00c);
 	dns_ans.ns_type  = htons(NS_TYPE_PTR);
 	dns_ans.ns_class = htons(NS_CLASS_IN);
-	dns_ans.ns_ttl   = htonl(DEFAULT_TTL);
+	dns_ans.ns_ttl   = htonl(ttl);
 	dns_ans.ns_len   = htons(strlen(tmp)+1);
 
     	packet_append(packet, &dns_ans, sizeof(dns_ans));
@@ -630,7 +631,7 @@ static int dns_append_aaaa(int sock, struct udp_packet *packet, int rr, struct i
 	dns_ans.ns_name  = htons(0xc00c);
 	dns_ans.ns_type  = htons(NS_TYPE_AAAA);
 	dns_ans.ns_class = htons(NS_CLASS_IN);
-	dns_ans.ns_ttl   = htonl(DEFAULT_TTL);
+	dns_ans.ns_ttl   = htonl(ttl);
 	dns_ans.ns_len   = htons(sizeof(struct in6_addr));
 
     	packet_append(packet, &dns_ans, sizeof(dns_ans));
@@ -734,7 +735,7 @@ static int parse_packet(int sock, struct udp_packet *packet)
 static void usage(void)
 {
 	mylog(LOG_ERR, "Reverse IPv6 DNS ver.%s", VERSION);
-	mylog(LOG_ERR, "Usage: %s [-d] [-i interface] [-a address] [-p port] [-4 | -6] nameserver domain subnet", PACKAGE);
+	mylog(LOG_ERR, "Usage: %s [-d] [-i interface] [-a address] [-p port] [-4 | -6] [ -t ttl ] nameserver domain subnet", PACKAGE);
 }
 
 int main(int argc, char *argv[])
@@ -752,7 +753,7 @@ int main(int argc, char *argv[])
 	list_init(&ifs);
 	list_init(&addrs);
 
-	while((opt = getopt(argc, argv, "i:a:p:46d")) != -1) {
+	while((opt = getopt(argc, argv, "i:a:p:46t:d")) != -1) {
 		switch (opt) {
 		case '4':
 			bind_family = AF_INET;
@@ -768,6 +769,9 @@ int main(int argc, char *argv[])
 			break;
 		case 'p':
 			bind_port = optarg;
+			break;
+		case 't':
+			ttl = atoi(optarg) ? : DEFAULT_TTL;
 			break;
 		case 'd':
 			detach = 0;
