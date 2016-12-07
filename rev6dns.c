@@ -734,7 +734,8 @@ static int parse_packet(int sock, struct udp_packet *packet)
 
 static void usage(void)
 {
-	mylog(LOG_ERR, "usage: %s [-d] [-i interface] [-a adress] [-p port] [-4 | -6] nameserver domain subnet", PACKAGE);
+	mylog(LOG_ERR, "Reverse IPv6 DNS ver.%s", VERSION);
+	mylog(LOG_ERR, "Usage: %s [-d] [-i interface] [-a address] [-p port] [-4 | -6] nameserver domain subnet", PACKAGE);
 }
 
 int main(int argc, char *argv[])

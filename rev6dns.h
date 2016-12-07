@@ -12,7 +12,7 @@
  */
 
 #define PACKAGE		"rev6dns"
-#define VERSION		"0.3"
+#define VERSION		"0.4"
 
 #define BIND_PORT	"53"
 
