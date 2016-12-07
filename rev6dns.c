@@ -49,7 +49,6 @@ static char 	       netrev[NI_MAXHOST+1];
 
 static char *domain;
 static char *nserver;
-static int detach = 1;
 
 static int is_open = 0;
 
@@ -744,7 +743,7 @@ int main(int argc, char *argv[])
 	int maxfd = -1;
 	struct timeval tv;
 	pid_t pid;
-	int ret, opt, sock, n;
+	int ret, opt, sock, n, detach = 1;
 	struct udp_packet packet;
 	struct list ifs, addrs;
 	struct item *item;
